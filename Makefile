@@ -1,5 +1,6 @@
 TEMPLATE_FILE = src/cloudformation-template.yml
-PARAMS = src/params/parameters.json
+PARAMS = src/params
+DEF = src/definitions
 STACK_NAME = morpheus
 BUCKET = cfn-build-objects
 PREFIX = morpheus
@@ -22,15 +23,21 @@ taskDef:
 	sed -e 's/<CONTAINER_NAME>/$(CONTAINER_NAME)/' \
 		-e 's/<CONTAINER_IMAGE>/$(CONTAINER_IMAGE)/' \
 		-e 's/<TASK_NAME>/$(TASK_NAME)/g' \
-		./src/task/task-def.json > ./build/task-def.json
-	
+		./src/def/task-def.json > ./build/task-def.json
+
 	jq . ./build/task-def.json
+	
+
+create-ecr:
+	aws ecr create-repository \
+		--cli-input-json "file://$(DEF)/ecr-def.json"\
+		--profile $(PROFILE)
 
 deploy:
 	aws cloudformation deploy \
 		--template-file ./build/cloudformation-template.yml \
 		--stack-name $(STACK_NAME) \
-		--parameter-overrides "file://$(PARAMS)" \
+		--parameter-overrides "file://$(PARAMS)/parameters.json" \
 		--capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
 		--region ap-northeast-1 \
 		--profile $(PROFILE)

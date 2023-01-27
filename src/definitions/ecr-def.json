@@ -1,0 +1,13 @@
+{
+    "repositoryName": "morpheus-repo",
+    "tags": [
+        {
+            "Key": "Project",
+            "Value": "morpheus"
+        }
+    ],
+    "imageTagMutability": "MUTABLE",
+    "imageScanningConfiguration": {
+        "scanOnPush": true
+    }
+}

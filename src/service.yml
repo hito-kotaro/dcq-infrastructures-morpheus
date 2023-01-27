@@ -7,10 +7,6 @@ Parameters:
     Type: String
 
 Resources:
-  ECR: 
-    Type: AWS::ECR::Repository
-    Properties: 
-      RepositoryName: !Sub ${Project}-repo-${Environment}
   Cluster:
     Type: 'AWS::ECS::Cluster'
     Properties:
@@ -20,3 +16,4 @@ Resources:
           Value: !Ref Project
         - Key: Environment
           Value: !Ref Environment
+  
