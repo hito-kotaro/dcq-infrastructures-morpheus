@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  Project:
+    Type: String
+  Environment:
+    Type: String
+
+Resources:
+  ECR: 
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: !Sub ${Project}-repo-${Environment}
+  Cluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: !Sub '${Project}-cluster-${Environment}'
+      Tags:
+        - Key: Project
+          Value: !Ref Project
+        - Key: Environment
+          Value: !Ref Environment

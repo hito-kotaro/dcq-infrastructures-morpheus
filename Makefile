@@ -5,6 +5,10 @@ BUCKET = cfn-build-objects
 PREFIX = morpheus
 PROFILE = tohi.work-admin
 
+CONTAINER_NAME = morpheus-container
+CONTAINER_IMAGE = image-arn
+TASK_NAME = morpheus-api-task
+
 package:
 	mkdir -p build
 	aws cloudformation package \
@@ -13,6 +17,14 @@ package:
 		--s3-prefix $(PREFIX) \
 		--output-template-file build/cloudformation-template.yml \
 		--region ap-northeast-1 --profile $(PROFILE)
+
+taskDef:
+	sed -e 's/<CONTAINER_NAME>/$(CONTAINER_NAME)/' \
+		-e 's/<CONTAINER_IMAGE>/$(CONTAINER_IMAGE)/' \
+		-e 's/<TASK_NAME>/$(TASK_NAME)/g' \
+		./src/task/task-def.json > ./build/task-def.json
+	
+	jq . ./build/task-def.json
 
 deploy:
 	aws cloudformation deploy \

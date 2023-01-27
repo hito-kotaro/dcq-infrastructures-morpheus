@@ -7,6 +7,16 @@ Parameters:
     Type: String
 
 Resources: 
+
+  # InitStack:
+  #   Type: AWS::CloudFormation::Stack
+  #   Properties:
+  #     TemplateURL: ./init.yml
+  #     Parameters:
+  #       Project: !Ref Project
+  #       Environment: !Ref Environment
+  #       EcsTaskExecutionRole: !ImportValue account-commons-EcsTaskExecutionRole
+
   NetworkStack:
     Type: AWS::CloudFormation::Stack
     Properties:
@@ -14,3 +24,12 @@ Resources:
       Parameters:
         Project: !Ref Project
         Environment: !Ref Environment
+
+  ServiceStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./service.yml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
+
