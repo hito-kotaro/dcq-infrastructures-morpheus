@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  Project:
+    Type: String
+  Environment:
+    Type: String
+
+Resources: 
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: ./network.yml
+      Parameters:
+        Project: !Ref Project
+        Environment: !Ref Environment
